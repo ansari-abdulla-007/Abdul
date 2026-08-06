@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="p-6 grid gap-4 max-w-4xl mx-auto">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Add Schedule</h2>
+        <input id="taskInput" placeholder="Task" class="border p-2 w-full mb-2 rounded">
+        <input id="dateInput" type="date" class="border p-2 w-full mb-2 rounded">
+        <button onclick="addEvent()" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">Add</button>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Weekly Goal</h2>
+        <input id="weeklyGoal" placeholder="Enter weekly goal" class="border p-2 w-full rounded">
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Monthly Goal</h2>
+        <input id="monthlyGoal" placeholder="Enter monthly goal" class="border p-2 w-full rounded">
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Your Schedule</h2>
+        <div id="scheduleList"></div>
+    </div>
+
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-bold mb-4">Analysis</h2>
+        <p id="analysis">No data</p>
+    </div>
+
+    <script>
+        let events = [];
+        let weeklyGoal = '';
+        let monthlyGoal = '';
+
+        function addEvent() {
+            const text = document.getElementById('taskInput').value;
+            const date = document.getElementById('dateInput').value;
+            if (!text || !date) return;
+            events.push({ text, date });
+            document.getElementById('taskInput').value = '';
+            document.getElementById('dateInput').value = '';
+            renderSchedule();
+            updateAnalysis();
+        }
+
+        function renderSchedule() {
+            const list = document.getElementById('scheduleList');
+            list.innerHTML = events.map((e, i) => 
+                `<div class="flex justify-between p-2 border-b">${e.text} <span>${e.date}</span></div>`
+            ).join('');
+        }
+
+        function updateAnalysis() {
+            const total = events.length;
+            document.getElementById('analysis').textContent = total === 0 ? 'No data' : `You have added ${total} tasks. Keep going!`;
+        }
+
+        // Goal inputs
+        document.getElementById('weeklyGoal').addEventListener('input', (e) => weeklyGoal = e.target.value);
+        document.getElementById('monthlyGoal').addEventListener('input', (e) => monthlyGoal = e.target.value);
+    </script>
+</body>
+</html>
+
